@@ -43,7 +43,45 @@ public class Main {
 
             // Encerra se o jogador cancelar
             if (entrada == null) break;
+            int palpite;
+            try {
+                palpite = Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Entrada inválida!", "Erro", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }
+
+            // Avaliação do palpite
+            if (palpite == numeroSorteado) {
+                JOptionPane.showMessageDialog(null, "Parabéns! Você acertou! Ganhou 10 pontos.");
+                pontuacaoTotal += 10;
+                numerosAcertados.append(numeroSorteado).append(" ");
+            } else if (Math.abs(palpite - numeroSorteado) == 1) {
+                JOptionPane.showMessageDialog(null, "Quase! Você estava a 1 de distância. Ganhou 5 pontos.");
+                pontuacaoTotal += 5;
+                numerosErrados.append(numeroSorteado).append(" ");
+            } else {
+                JOptionPane.showMessageDialog(null, "Errou! O número era " + numeroSorteado + ".");
+                numerosErrados.append(numeroSorteado).append(" ");
+            }
+
+            // Verifica se o jogador quer continuar
+            int resposta = JOptionPane.showConfirmDialog(
+                    null,
+                    "Deseja jogar novamente?",
+                    "Jogo do Adivinha",
+                    JOptionPane.YES_NO_OPTION
+            );
+            continuar = (resposta == JOptionPane.YES_OPTION);
         }
 
+        // Resultados finais
+        String mensagemFinal = "Fim de jogo!\n" +
+                "Pontuação total: " + pontuacaoTotal + "\n" +
+                "Números acertados: " + (numerosAcertados.length() > 0 ? numerosAcertados : "Nenhum") + "\n" +
+                "Números errados: " + (numerosErrados.length() > 0 ? numerosErrados : "Nenhum");
 
+        JOptionPane.showMessageDialog(null, mensagemFinal, "Resultados", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
+
